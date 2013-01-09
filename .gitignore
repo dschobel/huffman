@@ -1,0 +1,13 @@
+
+#********** IntelliJ template********** 
+
+*.iml
+*.ipr
+*.iws
+.idea/
+ 
+
+#********** scala template********** 
+
+*.class
+*.log
