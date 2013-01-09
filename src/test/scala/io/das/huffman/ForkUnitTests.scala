@@ -1,20 +1,15 @@
-package io.das.huffman.codetree
+package io.das.huffman
 
 import org.scalatest.{FunSpec, BeforeAndAfter}
-import io.das.huffman.CodeTree.{Fork,Leaf}
+import io.das.huffman.{Leaf, Fork}
 
-/**
- * User: daniel
- * Date: 7/01/13
- * Time: 2:42 PM
- */
 class ForkUnitTests extends FunSpec with BeforeAndAfter {
 
   var fork: Fork = _
   before {
     val left = new Leaf('a',3)
     val right = new Leaf('d',5)
-    fork = new Fork(left,right, Set('a','d'))
+    fork = new Fork(left,right)
   }
 
   describe("fork"){
@@ -28,11 +23,13 @@ class ForkUnitTests extends FunSpec with BeforeAndAfter {
 
     it("should reflect the summed weight of forks and leaves beneath the fork"){
       val other = new Leaf('z',1)
-      val parent = new Fork(fork,other, other.chars ++ fork.chars)
+      val parent = new Fork(fork,other)
 
       assert(parent.weight === 9)
       assert(parent.chars === Set('a','d','z'))
     }
+
+
   }
 
 }

@@ -1,5 +1,4 @@
-package io.das.huffman.CodeTree
-
+package io.das.huffman
 
 abstract class CodeTree{
   def weight:Int
@@ -8,7 +7,7 @@ abstract class CodeTree{
 
 object CodeTree{
   def print(root: CodeTree):String= root match{
-    case Fork(left,right, chars) => " (" + CodeTree.print(left) + ", " + CodeTree.print(right) + ") "
+    case Fork(left,right) => " (" + CodeTree.print(left) + ", " + CodeTree.print(right) + ") "
     case Leaf(char,weight) => "(%s,%d)".format(char,weight)
   }
 }

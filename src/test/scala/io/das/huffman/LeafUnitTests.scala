@@ -1,13 +1,8 @@
-package io.das.huffman.codetree
+package io.das.huffman
 
 import org.scalatest.{BeforeAndAfter, FunSpec}
-import io.das.huffman.CodeTree.Leaf
 
-/**
- * User: daniel
- * Date: 7/01/13
- * Time: 9:32 AM
- */
+
 class LeafUnitTests extends FunSpec with BeforeAndAfter {
 
   var leaf: Leaf = _
