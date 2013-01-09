@@ -1,7 +1,6 @@
 package io.das.huffman
 
 import org.scalatest.{FunSpec, BeforeAndAfter}
-import io.das.huffman.{Leaf, Fork}
 
 class ForkUnitTests extends FunSpec with BeforeAndAfter {
 
