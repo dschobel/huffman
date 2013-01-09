@@ -14,7 +14,7 @@ class ForkUnitTests extends FunSpec with BeforeAndAfter {
   before {
     val left = new Leaf('a',3)
     val right = new Leaf('d',5)
-    fork = new Fork(left,right)
+    fork = new Fork(left,right, Set('a','d'))
   }
 
   describe("fork"){
@@ -28,7 +28,7 @@ class ForkUnitTests extends FunSpec with BeforeAndAfter {
 
     it("should reflect the summed weight of forks and leaves beneath the fork"){
       val other = new Leaf('z',1)
-      val parent = new Fork(fork,other)
+      val parent = new Fork(fork,other, other.chars ++ fork.chars)
 
       assert(parent.weight === 9)
       assert(parent.chars === Set('a','d','z'))

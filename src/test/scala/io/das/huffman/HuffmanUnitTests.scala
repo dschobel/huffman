@@ -69,6 +69,16 @@ class HuffmanUnitTests extends FunSpec {
       assert(tree.weight === 18)
       assert(tree.chars.size === 3)
     }
+    it("should produce a codetree with the maximally weighted char at the root"){
+      val freq: Map[Char,Int] = Map('a' -> 5, 'b' -> 3, 'c' -> 10)
+
+      val tree = Huffman.makeCodeTreeFromFreqs(freq)
+      assert(tree.chars.contains('a'))
+      assert(tree.chars.contains('b'))
+      assert(tree.chars.contains('c'))
+      assert(tree.weight === 18)
+      assert(tree.chars.size === 3)
+    }
 
   }
 
@@ -90,7 +100,7 @@ class HuffmanUnitTests extends FunSpec {
       val input = List(CodeTree.Leaf('a',1),CodeTree.Leaf('b',2))
       val processed = Huffman.processCodeTrees(input)
       val results  = processed.head match{
-        case CodeTree.Fork(left,right) => (left === input.head, right === input.tail.head)
+        case CodeTree.Fork(left,right, chars) => (left === input.head, right === input.tail.head)
         case _ => throw new Exception("CodeTree.Fork expected")
       }
 

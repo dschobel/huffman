@@ -22,7 +22,7 @@ object Huffman{
     if (xs.length == 1)
       xs
     else{
-      CodeTree.Fork(xs.head,xs.tail.head) :: xs.tail.tail
+      CodeTree.Fork(xs.head,xs.tail.head, xs.head.chars ++ xs.tail.head.chars) :: xs.tail.tail
     }
   }
 
