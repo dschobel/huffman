@@ -1,8 +1,6 @@
 package io.das.huffman
 
 import org.scalatest.FunSpec
-import CodeTree._
-import io.das.huffman
 
 class HuffmanUnitTests extends FunSpec {
 
@@ -137,7 +135,7 @@ class HuffmanUnitTests extends FunSpec {
   describe("combineCodeTrees"){
     it("should return the original list when size is < 2")
     {
-      val input = List(huffman.Leaf('a',1))
+      val input = List(Leaf('a',1))
       assert(Huffman.combineCodeTrees(input) === input)
     }
 

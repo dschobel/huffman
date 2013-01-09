@@ -1,9 +1,5 @@
 package io.das.huffman
 
-import CodeTree._
-import oracle.jrockit.jfr.events.Bits
-
-
 object Huffman{
 
   //repeatedly apply 'fx' until condition 'done' is met
