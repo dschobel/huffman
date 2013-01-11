@@ -70,8 +70,6 @@ object Huffman{
    */
   def countFrequency(text: Iterable[Char]): Map[Char,Int]= text.foldLeft(Map.empty[Char,Int])((map,char) => map + (char -> (map.getOrElse(char,0) + 1)))
 
-
-
   /**
    * Decode a sequence of bits using the provided code tree
    * @param tree the code tree use to interpret the bits
@@ -141,5 +139,4 @@ object Huffman{
       encode(code,text.tail, acc ::: bits)
     }
   }
-
 }
