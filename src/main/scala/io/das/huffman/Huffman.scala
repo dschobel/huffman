@@ -28,16 +28,13 @@ object Huffman{
    * @return return a list containing the new fork
    *         otherwise return the original list if the original had only one element
    */
-  def combineCodeTrees(xs: List[CodeTree]): List[CodeTree]={
-
-    if (xs.length == 1)
-      xs
-    else{
-
-      val  f = Fork(xs.head,xs.tail.head)//combine two least weighted nodes
-      val (less, greater) = xs.tail.tail.span(_.weight < f.weight) // partition remaining leaves
-                                                                   // around the new fork's weight
-
+  def combineCodeTrees(xs: List[CodeTree]): List[CodeTree]= xs match{
+    case Nil => Nil
+    case x :: Nil => xs
+    case x :: y :: xs1 => {
+      val  f = Fork(x,y)//combine two least weighted nodes
+      val (less, greater) = xs1.span(_.weight < f.weight) // partition remaining leaves
+                                                          // around the new fork's weight
       //combine results
       less ::: List(f) ::: greater
     }
