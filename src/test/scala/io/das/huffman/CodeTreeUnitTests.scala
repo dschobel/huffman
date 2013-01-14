@@ -2,12 +2,21 @@ package io.das.huffman
 
 import org.scalatest.FunSpec
 
-class HuffmanUnitTests extends FunSpec {
+class CodeTreeUnitTests extends FunSpec {
+
+  describe("code tree equivalence"){
+    it("should return true for code trees generated from identical sources"){
+      val msg = "hello world" toList
+      val t1 = CodeTree.makeCodeTreeFromText(msg)
+      val t2 = CodeTree.makeCodeTreeFromText(msg)
+      assert(t1 === t2)
+    }
+  }
 
 
   describe ("countFrequency"){
     it ("should correctly count character frequencies"){
-      val freqs = Huffman.countFrequency("foaaobar".toList)
+      val freqs = CodeTree.countFrequency("foaaobar".toList)
       assert(freqs('f') === 1)
       assert(freqs('o') === 2)
       assert(freqs('b') === 1)
@@ -16,7 +25,7 @@ class HuffmanUnitTests extends FunSpec {
     }
 
     it("should still correctly count characters frequencies "){
-      val freqs = Huffman.countFrequency("this is an example of a huffman tree".toList)
+      val freqs = CodeTree.countFrequency("this is an example of a huffman tree".toList)
       assert(freqs(' ') === 7)
       assert(freqs('a') === 4)
       assert(freqs('e') === 4)
@@ -37,7 +46,7 @@ class HuffmanUnitTests extends FunSpec {
     }
 
     it("shouldn't report any frequencies for an empty iterator"){
-      assert(Huffman.countFrequency(Nil) === Map.empty[Char,Int])
+      assert(CodeTree.countFrequency(Nil) === Map.empty[Char,Int])
     }
 
   }
@@ -46,7 +55,7 @@ class HuffmanUnitTests extends FunSpec {
     it("should terminate immediately if test is true"){
       val data = List(1,2,3)
 
-      val processed = Huffman.processUntil[Int](data)(d => true)(xs => ???)
+      val processed = CodeTree.processUntil[Int](data)(d => true)(xs => ???)
       assert(processed === data)
     }
 
@@ -62,7 +71,7 @@ class HuffmanUnitTests extends FunSpec {
       }
 
 
-      val processed = Huffman.processUntil[Int](data)(_.length == 1)(fx)
+      val processed = CodeTree.processUntil[Int](data)(_.length == 1)(fx)
       assert(processed.length === 1)
       assert(processed(0) === 6)
     }
@@ -73,7 +82,7 @@ class HuffmanUnitTests extends FunSpec {
     it("should produce a codetree with a single leaf for a frequency map with one key"){
       val freq: Map[Char,Int] = Map('a' -> 5)
 
-      val tree = Huffman.makeCodeTreeFromFreqs(freq)
+      val tree = CodeTree.makeCodeTreeFromFreqs(freq)
       assert(tree.chars.contains('a'))
       assert(tree.weight === 5)
       assert(tree.chars.size === 1)
@@ -82,7 +91,7 @@ class HuffmanUnitTests extends FunSpec {
     it("should produce a correct tree with only two keys"){
 
       val freq: Map[Char,Int] = Map('c' -> 1,'b' -> 2)
-      val tree = Huffman.makeCodeTreeFromFreqs(freq)
+      val tree = CodeTree.makeCodeTreeFromFreqs(freq)
 
       assert(tree.isInstanceOf[Fork])
       val  (lt,rt) = tree match { case Fork(left,right) => (left,right)}
@@ -98,7 +107,7 @@ class HuffmanUnitTests extends FunSpec {
     it("it should build a code tree with highest weight key at the top level"){
       val freq: Map[Char,Int] = Map('a' -> 3,  'c' -> 2,'b' -> 1)
 
-      val tree = Huffman.makeCodeTreeFromFreqs(freq)
+      val tree = CodeTree.makeCodeTreeFromFreqs(freq)
       assert(tree.chars.contains('a'))
       assert(tree.chars.contains('b'))
       assert(tree.chars.contains('c'))
@@ -121,7 +130,7 @@ class HuffmanUnitTests extends FunSpec {
 
     //known good values from http://en.wikipedia.org/wiki/Huffman_coding
     it("should build the correct codetree"){
-      val tree = Huffman.makeCodeTreeFromText("this is an example of a huffman tree".toList)
+      val tree = CodeTree.makeCodeTreeFromText("this is an example of a huffman tree".toList)
 
       assert(tree.weight === 36)
 
@@ -136,19 +145,19 @@ class HuffmanUnitTests extends FunSpec {
     it("should return the original list when size is < 2")
     {
       val input = List(Leaf('a',1))
-      assert(Huffman.combineCodeTrees(input) === input)
+      assert(CodeTree.combineCodeTrees(input) === input)
     }
 
     it("should replace two leaves with one fork from the input list"){
       val input = List(Leaf('a',1),Leaf('b',2))
-      val processed = Huffman.combineCodeTrees(input)
+      val processed = CodeTree.combineCodeTrees(input)
       assert(processed.length === 1)
       assert(processed.head.isInstanceOf[Fork])
     }
 
     it("should produce a fork which points to the replaced leaves"){
       val input = List(Leaf('a',1),Leaf('b',2))
-      val processed = Huffman.combineCodeTrees(input)
+      val processed = CodeTree.combineCodeTrees(input)
       val results  = processed.head match{
         case Fork(left,right) => (left === input.head, right === input.tail.head)
         case _ => throw new Exception("CodeTree.Fork expected")
@@ -162,10 +171,10 @@ class HuffmanUnitTests extends FunSpec {
   describe("encoding and decoding"){
     it("should be possible to decode an encoded message"){
       val message = "this is my super secret message"
-      val codetree = Huffman.makeCodeTreeFromText(message.toList)
+      val tree = CodeTree.makeCodeTreeFromText(message.toList)
 
-      val encoded = Huffman.encode(codetree,message.toList)
-      val decoded = Huffman.decode(codetree,encoded).mkString
+      val encoded = tree.encode(message.toList)
+      val decoded = tree.decode(encoded).mkString
 
       assert(decoded === message)
     }
